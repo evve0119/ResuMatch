@@ -19,7 +19,9 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "mssql": "^11.0.1"
+    "mssql": "^11.0.1",
+    "openai": "^3.2.1",
+    "puppeteer": "^24.4.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.9",

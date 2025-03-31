@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Resume</title>
+</head>
+<body>
+
+<!-- TOP HEADER with Name, Email, Phone, Location -->
+<header>
+  <h1 class="name">{{personalInfo.name}} {{personalInfo.surname}}</h1>
+  <div class="top-contacts">
+    <!-- The user can reorder these however they want -->
+    <span class="location">{{personalInfo.city}}, {{personalInfo.state}}</span>
+    <span class="contact">{{personalInfo.email}}</span>
+    <span class="contact">{{personalInfo.phone_prefix}} {{personalInfo.phone}}</span>
+    <span class="contact">
+      <a href="{{personalInfo.github}}">GitHub</a>
+    </span>
+    <span class="contact">
+      <a href="{{personalInfo.linkedin}}">LinkedIn</a>
+    </span>
+  </div>
+</header>
+
+<!-- EDUCATION SECTION -->
+<section>
+  <h2>Education</h2>
+  {{#each education_details}}
+  <div class="entry">
+    <div class="row">
+      <div class="left">
+        <strong>{{this.education_level}}</strong>
+        {{#if this.institution}}<span class="inst">{{this.institution}}</span>{{/if}}
+      </div>
+      <div class="right">
+        {{#if this.location}}{{this.location}} | {{/if}}{{this.start_date}} - {{this.year_of_completion}}
+      </div>
+    </div>
+
+    {{#if this.final_evaluation_grade}}
+    <p><strong>Final Evaluation Grade:</strong> {{this.final_evaluation_grade}}</p>
+    {{/if}}
+
+    {{#if this.coursework}}
+    <p><strong>Relevant Coursework:</strong> {{#each this.coursework}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</p>
+    {{/if}}
+  </div>
+  {{/each}}
+</section>
+
+<!-- EXPERIENCE SECTION -->
+<section>
+  <h2>Experience</h2>
+  {{#each experience_details}}
+  <div class="entry">
+    <div class="row">
+      <div class="left">
+        <strong>{{this.position}}</strong>, {{this.company}}
+      </div>
+      <div class="right">
+        {{this.location}} | {{this.employment_period}}
+      </div>
+    </div>
+    <ul class="bullets">
+      {{#each this.key_responsibilities}}
+      <li>{{this}}</li>
+      {{/each}}
+    </ul>
+  </div>
+  {{/each}}
+</section>
+
+<!-- TECHNICAL SKILLS (now comma-separated) -->
+<section>
+  <h2>Technical Skills</h2>
+
+  {{#if technical_skills.programming_languages}}
+  <p>
+    <strong>Programming Languages:</strong>
+    {{#each technical_skills.programming_languages}}
+      {{this}}{{#unless @last}}, {{/unless}}
+    {{/each}}
+  </p>
+  {{/if}}
+
+  {{#if technical_skills.frameworks_tools}}
+  <p>
+    <strong>Frameworks &amp; Tools:</strong>
+    {{#each technical_skills.frameworks_tools}}
+      {{this}}{{#unless @last}}, {{/unless}}
+    {{/each}}
+  </p>
+  {{/if}}
+
+</section>
+
+<!-- PROJECTS SECTION -->
+<section>
+  <h2>Projects</h2>
+  {{#each projects}}
+  <div class="entry">
+    <div class="row">
+      <div class="left">
+        <strong>{{this.name}}</strong>
+      </div>
+      <div class="right">{{this.tech}}</div>
+    </div>
+    <ul class="bullets">
+      {{#each this.description}}
+      <li>{{this}}</li>
+      {{/each}}
+    </ul>
+  </div>
+  {{/each}}
+</section>
+
+</body>
+</html>
