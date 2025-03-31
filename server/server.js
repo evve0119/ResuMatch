@@ -5,8 +5,11 @@ const app = express();
 
 const authRoutes = require('./routes/auth.routes');
 const resumeRoutes = require('./routes/resume.routes');
+const accountRoutes = require('./routes/account.routes');
 
-app.use(express.json());
+
+app.use(express.json({ limit: '10mb' })); // 或者 '20mb' 視情況調整
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(cors({ origin: ['http://localhost:5173'] }));
 
 // Health check
@@ -17,6 +20,10 @@ app.use('/', authRoutes);
 
 // Resume routes
 app.use('/resume', resumeRoutes);
+
+// Account routes
+app.use('/account', accountRoutes);
+
 
 // Start server
 app.listen(8080, () => {

@@ -68,38 +68,43 @@ ${JSON.stringify(resumeObj, null, 2)}
     console.log('** [Step 3] Received HTML from OpenAI. Length:', generatedHTML.length);
 
     // ---------------- Step 4: Clean Up GPT Output ----------------
-    // Remove any lingering code fences (just in case)
     const cleanedHTML = generatedHTML
       .replace(/```html\s*/gi, '')
       .replace(/```/g, '')
       .trim();
 
-    fs.writeFileSync('debug_generatedResume.html', cleanedHTML, 'utf8');
-    console.log('** [Step 4] Cleaned HTML saved to debug_generatedResume.html');
+    console.log('** [Step 4] Cleaned HTML ready for Puppeteer.');
 
     // ---------------- Step 5: Convert to PDF ----------------
     console.log('** [Step 5] Launching Puppeteer to generate PDF...');
-    const browser = await puppeteer.launch({ headless: 'new', timeout: 60000 });
+
+
+    const browser = await puppeteer.launch({ headless: 'new' });
     const page = await browser.newPage();
 
-    // We already have the final HTML (template + data + CSS) from OpenAI.
     await page.setContent(cleanedHTML, { waitUntil: 'networkidle0' });
 
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const pdfPath = `output_resume_${timestamp}.pdf`;
 
-    await page.pdf({
-      path: pdfPath,
+    const pdfUint8Array = await page.pdf({
       format: 'A4',
-      printBackground: true,      // Usually better to keep background if we have styled sections
+      printBackground: true,
       preferCSSPageSize: true,
-      scale: 0.96
+      scale: 0.96,
     });
 
     await browser.close();
-    console.log('** [Step 6] PDF generated at:', pdfPath);
 
-    return { pdfPath };
+    // 🚨 Important Fix:
+    const pdfBuffer = Buffer.from(pdfUint8Array);
+
+    // Double-check (for debugging)
+    // console.log('pdfBuffer is Buffer:', Buffer.isBuffer(pdfBuffer));
+    // console.log('pdfBuffer length:', pdfBuffer.length);
+
+    console.log('** [Step 6] PDF buffer generated successfully.');
+
+    return pdfBuffer;
+
   } catch (error) {
     console.error('❌ Error generating PDF:', error);
     throw error;
