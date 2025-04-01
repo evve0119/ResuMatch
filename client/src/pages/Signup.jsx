@@ -11,7 +11,7 @@ export default function Signup() {
     password: '',
     confirmPassword: '',
   });
-  const [popup, setPopup] = useState(false);
+
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -34,9 +34,14 @@ export default function Signup() {
         password: form.password,
       });
 
-      // ⭐ 註冊成功後自動登入
       localStorage.setItem('token', res.data.token);
-      window.location.href = '/'; // 讓 Navbar 能重整更新狀態
+
+      // 顯示提示，延遲跳轉
+
+      setTimeout(() => {
+        alert('✅ Signup successful! Redirecting...');
+        navigate('/');
+      }, 1500);
     } catch (err) {
       alert(err.response?.data?.error || 'Signup failed');
     }
@@ -47,15 +52,11 @@ export default function Signup() {
 
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-xs flex flex-col items-center relative">
-          {/* Popup message */}
-          {popup && (
-            <div className="absolute -top-10 bg-green-200 text-green-800 px-4 py-2 rounded shadow">
-              ✅ Successfully signed up!
-            </div>
-          )}
+
+
 
           {/* Social Sign Up */}
-          <button className="flex items-center w-full border border-gray-300 rounded-full px-6 py-2 mb-4">
+          {/* <button className="flex items-center w-full border border-gray-300 rounded-full px-6 py-2 mb-4">
             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" alt="LinkedIn" className="h-5 w-5 mr-2" />
             <span className="text-gray-600">Sign up with LinkedIn</span>
           </button>
@@ -63,14 +64,14 @@ export default function Signup() {
           <button className="flex items-center w-full border border-gray-300 rounded-full px-6 py-2 mb-4">
             <img src="https://kgo.googleusercontent.com/profile_vrt_raw_bytes_1587515358_10512.png" alt="Google" className="h-5 w-5 mr-2" />
             <span className="text-gray-600">Sign up with Google</span>
-          </button>
+          </button> */}
 
           {/* Divider */}
-          <div className="flex items-center w-full my-6">
+          {/* <div className="flex items-center w-full my-6">
             <hr className="flex-grow border-t border-gray-300" />
             <span className="mx-4 text-gray-500">or</span>
             <hr className="flex-grow border-t border-gray-300" />
-          </div>
+          </div> */}
 
           {/* Signup Form */}
           <form onSubmit={handleSignup} className="w-full">
