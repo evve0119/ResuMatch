@@ -20,8 +20,8 @@ To set up and run the ResuMatch application locally, please follow the steps bel
    cd ResuMatch/server
    npm install
    npm run dev
-4.	**Environment Configuration:**
-Ensure that a .env file is present in both ResuMatch/server directory. The correct environment variables have been shared via WhatsApp.
+4. **Environment Configuration:**
+Ensure that a `.env` file is present in both `ResuMatch/server` and directory. The correct environment variables have been shared via WhatsApp.
 5.	**Node.js Version:**
     The project is tested with Node.js v18.20.3. Make sure you are using this version to avoid compatibility issues.
 6.	**Test Account for Demo Purposes:**
