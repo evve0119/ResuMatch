@@ -1,4 +1,3 @@
-// src/Login.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api';
@@ -6,7 +5,6 @@ import Navbar from '../components/Navbar';
 
 export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
-  const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -18,9 +16,13 @@ export default function Login() {
     try {
       const res = await api.post('/login', form);
       localStorage.setItem('token', res.data.token);
-      navigate('/'); // redirect to home
+
+      alert('✅ Login successful! Redirecting...');
+      setTimeout(() => {
+        navigate('/');
+      }, 1500);
     } catch (err) {
-      setMessage('❌ ' + (err.response?.data?.error || 'Login failed'));
+      alert('❌ ' + (err.response?.data?.error || 'Login failed'));
     }
   };
 
@@ -28,7 +30,6 @@ export default function Login() {
     <div className="min-h-screen bg-white font-trebuchet">
       <Navbar />
 
-      {/* <div className="min-h-[80vh] flex items-center justify-center px-4"> */}
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-xs flex flex-col items-center">
           <form onSubmit={handleLogin} className="w-full">
@@ -57,14 +58,8 @@ export default function Login() {
             >
               Login
             </button>
-
-            {/* Error message inside the form */}
-            {message && (
-              <p className="mt-4 text-center text-red-500 text-sm">{message}</p>
-            )}
           </form>
 
-          {/* Sign up link BELOW the form */}
           <p className="text-sm text-center mt-4 text-gray-700">
             New to ResuMate?{' '}
             <Link to="/signup" className="text-[#320C8A] font-semibold hover:underline">
