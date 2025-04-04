@@ -13,26 +13,26 @@ jobs:
       contents: read
 
     steps:
-      - name: Checkout code
+      - name: 📥 Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js 18.18.0
+      - name: 🟢 Set up Node.js 18.18.0
         uses: actions/setup-node@v3
         with:
           node-version: '18.18.0'
 
-      - name: npm install, build, and test
+      - name: 📦 npm install & optional build
         working-directory: ./server
         run: |
           npm install
           npm run build --if-present
 
-      - name: Zip artifact for deployment
+      - name: 📦 Zip artifact for deployment
         run: |
           cd server
           zip -r ../release.zip .
 
-      - name: Upload artifact for deployment job
+      - name: ⬆️ Upload artifact for deploy
         uses: actions/upload-artifact@v4
         with:
           name: node-app
@@ -49,28 +49,25 @@ jobs:
       contents: read
 
     steps:
-      - name: Download artifact from build job
+      - name: 📥 Download artifact from build
         uses: actions/download-artifact@v4
         with:
           name: node-app
 
-      - name: Unzip artifact
-        run: unzip release.zip
-
-      - name: Login to Azure
+      - name: 🔓 Login to Azure
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_84175387482741C599F7981C2F83658F }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_29E7DFC228F840319E84F18D991F99E5 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_5591A7E5225F4008B71941FBD880A450 }}
-      
-      - name: Wait to avoid conflict with Azure SCM restart
+
+      - name: ⏱ Wait to avoid conflict
         run: sleep 20
-        
-      - name: Deploy to Azure Web App
+
+      - name: 🚀 Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'resumatch-backend'
           slot-name: 'Production'
-          package: .
+          package: release.zip
