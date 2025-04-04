@@ -13,7 +13,6 @@ const puppeteer = require('puppeteer');
 async function generateResumePDF(resumeObj) {
 
   console.log('** [Step 0] Starting PDF generation...');
-  console.log('** [Step 0] Resume Object:', resumeObj);
 
   try {
     // ---------------- Step 1: Read Template & CSS ----------------
