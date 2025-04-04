@@ -6,6 +6,7 @@ const app = express();
 const authRoutes = require('./routes/auth.routes');
 const resumeRoutes = require('./routes/resume.routes');
 const accountRoutes = require('./routes/account.routes');
+const PORT = process.env.PORT || 8080;
 
 
 app.use(express.json({ limit: '10mb' })); // 或者 '20mb' 視情況調整
@@ -32,6 +33,6 @@ app.use('/account', accountRoutes);
 
 
 // Start server
-app.listen(8080, () => {
-  console.log('Server is running on port 8080');
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
