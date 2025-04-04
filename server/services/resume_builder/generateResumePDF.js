@@ -1,19 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const openai = require('../openaiClient');
+const { chromium } = require('playwright');
 
-// Dual Puppeteer Setup based on environment variable
 const isRunningOnAzure = process.env.AZURE_FUNCTIONS_ENVIRONMENT === 'Production';
-
-let puppeteer, chromium;
-if (isRunningOnAzure) {
-  // In production (Azure), use puppeteer-core with chrome-aws-lambda
-  puppeteer = require('puppeteer-core');
-  chromium = require('chrome-aws-lambda');
-} else {
-  // For local development (if needed), use full puppeteer
-  puppeteer = require('puppeteer');
-}
 
 async function generateResumePDF(resumeObj) {
   console.log('** [Step 0] Starting PDF generation...');
@@ -80,29 +70,14 @@ async function generateResumePDF(resumeObj) {
       .replace(/```html\s*/gi, '')
       .replace(/```/g, '')
       .trim();
-    console.log('** [Step 4] Cleaned HTML ready for Puppeteer.');
+    console.log('** [Step 4] Cleaned HTML ready for Playwright.');
 
-    // Step 5: Launch Puppeteer and generate PDF
-    console.log('** [Step 5] Launching Puppeteer...');
-    const launchOptions = isRunningOnAzure
-      ? {
-          args: chromium.args,
-          executablePath: await chromium.executablePath, // Use the path provided by chrome-aws-lambda
-          headless: chromium.headless,
-        }
-      : {
-          headless: 'new',
-        };
-
-    // Debug: Log the executable path (should be non-null in production)
-    if (isRunningOnAzure) {
-      const execPath = await chromium.executablePath;
-      console.log('** [Debug] Chromium executable path:', execPath);
-    }
-
-    const browser = await puppeteer.launch(launchOptions);
+    // Step 5: Launch Playwright and generate PDF
+    console.log('** [Step 5] Launching Playwright Chromium...');
+    const browser = await chromium.launch({ headless: true });
     const page = await browser.newPage();
-    await page.setContent(cleanedHTML, { waitUntil: 'networkidle0' });
+
+    await page.setContent(cleanedHTML, { waitUntil: 'networkidle' });
 
     const pdfBuffer = await page.pdf({
       format: 'A4',
@@ -113,7 +88,8 @@ async function generateResumePDF(resumeObj) {
 
     await browser.close();
     console.log('** [Step 6] PDF generated successfully.');
-    return Buffer.from(pdfBuffer);
+
+    return Buffer.from(pdfBuffer); // ✅ Keep return type consistent
 
   } catch (error) {
     console.error('❌ Error generating PDF:', error);
