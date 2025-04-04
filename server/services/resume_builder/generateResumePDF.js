@@ -1,9 +1,12 @@
 const fs = require('fs');
 const path = require('path');
+const fetch = require('node-fetch');
 const openai = require('../openaiClient');
-const { chromium } = require('playwright');
 
-const isRunningOnAzure = process.env.AZURE_FUNCTIONS_ENVIRONMENT === 'Production';
+// Set up global btoa in Node.js
+global.btoa = (str) => Buffer.from(str).toString('base64');
+
+const PDFSHIFT_API_KEY = process.env.PDFSHIFT_API_KEY;
 
 async function generateResumePDF(resumeObj) {
   console.log('** [Step 0] Starting PDF generation...');
@@ -18,7 +21,7 @@ async function generateResumePDF(resumeObj) {
     const cssPath = path.join(__dirname, 'css', 'style_cloyola.css');
     const cssContent = fs.readFileSync(cssPath, 'utf8');
 
-    // Step 2: Build prompt for OpenAI
+    // Step 2: Build prompt
     console.log('** [Step 2] Preparing prompt for OpenAI...');
     const prompt = `
     You are an expert resume formatter.
@@ -65,34 +68,43 @@ async function generateResumePDF(resumeObj) {
     let generatedHTML = completion.data.choices[0].message.content.trim();
     console.log('** [Step 3] Received HTML from OpenAI. Length:', generatedHTML.length);
 
-    // Step 4: Clean up the HTML output
+    // Step 4: Clean HTML
     const cleanedHTML = generatedHTML
       .replace(/```html\s*/gi, '')
       .replace(/```/g, '')
       .trim();
-    console.log('** [Step 4] Cleaned HTML ready for Playwright.');
+    console.log('** [Step 4] Cleaned HTML ready for PDFShift...');
 
-    // Step 5: Launch Playwright and generate PDF
-    console.log('** [Step 5] Launching Playwright Chromium...');
-    const browser = await chromium.launch({ headless: true });
-    const page = await browser.newPage();
+    // Step 5: Send to PDFShift using node-fetch
+    console.log('** [Step 5] Sending request to PDFShift...');
+    const auth = 'Basic ' + btoa('api:' + PDFSHIFT_API_KEY);
 
-    await page.setContent(cleanedHTML, { waitUntil: 'networkidle' });
-
-    const pdfBuffer = await page.pdf({
-      format: 'A4',
-      printBackground: true,
-      preferCSSPageSize: true,
-      scale: 0.96,
+    const response = await fetch('https://api.pdfshift.io/v3/convert/pdf', {
+      method: 'POST',
+      headers: {
+        Authorization: auth,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        source: cleanedHTML,
+        landscape: false,
+        use_print: true,
+        sandbox: false, // Remove or set to false in production
+      }),
     });
 
-    await browser.close();
-    console.log('** [Step 6] PDF generated successfully.');
+    if (!response.ok) {
+      const errText = await response.text();
+      throw new Error(`PDFShift Error: ${response.status} ${response.statusText} - ${errText}`);
+    }
 
-    return Buffer.from(pdfBuffer); // ✅ Keep return type consistent
+    const pdfBuffer = await response.buffer();
+    console.log('** [Step 6] PDF generated successfully. Buffer length:', pdfBuffer.length);
+
+    return Buffer.from(pdfBuffer); // 🔁 Keep return type the same
 
   } catch (error) {
-    console.error('❌ Error generating PDF:', error);
+    console.error('❌ Error generating PDF:', error.message);
     throw error;
   }
 }
