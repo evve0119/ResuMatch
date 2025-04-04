@@ -62,6 +62,13 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_29E7DFC228F840319E84F18D991F99E5 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_5591A7E5225F4008B71941FBD880A450 }}
 
+      - name: ➕ Set Environment Variable (AZURE_FUNCTIONS_ENVIRONMENT)
+        run: |
+          az webapp config appsettings set \
+            --name resumatch-backend \
+            --resource-group YOUR_RESOURCE_GROUP_NAME \
+            --settings AZURE_FUNCTIONS_ENVIRONMENT=Production
+
       - name: 🕒 Wait to avoid conflict
         run: sleep 20
 
