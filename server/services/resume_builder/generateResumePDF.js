@@ -19,7 +19,7 @@ async function generateResumePDF(resumeObj) {
   console.log('[ENV] AZURE_FUNCTIONS_ENVIRONMENT =', process.env.AZURE_FUNCTIONS_ENVIRONMENT);
 
   try {
-    // Step 1: Read template and CSS
+    // Step 1: Read template & CSS
     console.log('** [Step 1] Reading template and CSS from disk...');
     const templatePath = path.join(__dirname, 'resumeTemplate.html');
     const resumeTemplateString = fs.readFileSync(templatePath, 'utf8');
@@ -53,6 +53,7 @@ async function generateResumePDF(resumeObj) {
     let generatedHTML = completion.data.choices[0].message.content.trim();
     console.log('** [Step 3] Received HTML from OpenAI. Length:', generatedHTML.length);
 
+    // Clean HTML
     const cleanedHTML = generatedHTML
       .replace(/```html\s*/gi, '')
       .replace(/```/g, '')
@@ -62,18 +63,17 @@ async function generateResumePDF(resumeObj) {
 
     // Step 5: Launch Puppeteer
     console.log('** [Step 5] Launching Puppeteer...');
-    const browser = await puppeteer.launch(
-      isRunningOnAzure
-        ? {
-            args: chromium.args,
-            executablePath: await chromium.executablePath || '/usr/bin/chromium-browser',
-            headless: chromium.headless,
-          }
-        : {
-            headless: 'new',
-          }
-    );
+    const launchOptions = isRunningOnAzure
+      ? {
+          args: chromium.args,
+          executablePath: await chromium.executablePath, // ✅ No fallback
+          headless: chromium.headless,
+        }
+      : {
+          headless: 'new',
+        };
 
+    const browser = await puppeteer.launch(launchOptions);
     const page = await browser.newPage();
     await page.setContent(cleanedHTML, { waitUntil: 'networkidle0' });
 
