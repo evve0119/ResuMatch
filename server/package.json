@@ -7,9 +7,6 @@
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@azure/storage-blob": "^12.27.0",
     "@prisma/client": "^6.5.0",
