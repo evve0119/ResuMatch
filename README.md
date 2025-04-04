@@ -279,5 +279,5 @@ Finalize documentation (README.md, deployment guide, API docs).
 - Record a video demo showcasing the full functionality of the application.
 
 # **4\. Conclusion**
-
+y
 **_ResuMatch_** presents an innovative solution to job seekers by automating resume customization, reducing manual effort, and improving application relevance. By leveraging AI, modern web development frameworks, and a user-friendly interface, our resume builder stands out as a **time-saving**, **AI-driven**, and **customizable** tool for professional growth. The inclusion of intelligent job description matching, resume versioning, and advanced customization ensures that users can create targeted resumes with ease, improving their chances of securing their desired roles.
