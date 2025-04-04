@@ -5,9 +5,10 @@ import { useNavigate } from 'react-router-dom';
 
 export default function CreateResume() {
   const [loading, setLoading] = useState(false);
-  const [saving, setSaving] = useState(false); // ✅ Added this
+  const [saving, setSaving] = useState(false);
   const [pdfUrl, setPdfUrl] = useState(null);
   const [pdfBlob, setPdfBlob] = useState(null);
+  const [resumeTitle, setResumeTitle] = useState(''); // ✅ Added
   const [isAccountAvailable, setIsAccountAvailable] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
   const [jobDescription, setJobDescription] = useState('');
@@ -42,11 +43,44 @@ export default function CreateResume() {
         },
       });
 
-      const resumeRes = await api.post(
+      const {
+        name,
+        surname,
+        phone,
+        email,
+        github,
+        linkedin,
+        city,
+        state,
+        education,
+        experience,
+        technicalSkills,
+        projects
+      } = accountRes.data;
+
+      const resumeJson = {
+        personal_information: {
+          name,
+          surname,
+          phone,
+          email,
+          github,
+          linkedin,
+          city,
+          state
+        },
+        education_details: education,
+        experience_details: experience,
+        technical_skills: technicalSkills,
+        projects
+      };
+
+      // Step 3: Call backend to generate PDF & title
+      const response = await api.post(
         '/resume/generate',
         {
-          ...accountRes.data,
-          jobDescription: jobDescription.trim(),
+          resumeJson,
+          jobDescription: jobDescription.trim()
         },
         {
           responseType: 'blob',
@@ -55,12 +89,23 @@ export default function CreateResume() {
           },
         }
       );
+      console.log('Response headers:', response.headers);
+      // Get title from header if sent, or fallback
+      const titleFromHeader = response.headers['x-resume-title'];
+      console.log('X-Resume-Title from headers:', titleFromHeader);
 
-      const blob = new Blob([resumeRes.data], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
+      const contentDisposition = response.headers['content-disposition'];
+      const match = contentDisposition?.match(/filename="(.+)\.pdf"/);
+      const fallbackTitle = match ? match[1] : 'Generated_Resume';
+      console.log('Fallback title:', fallbackTitle);
 
+      const title = titleFromHeader || fallbackTitle;
+      console.log('Final title used:', title);
+      setResumeTitle(title);
+
+      const blob = new Blob([response.data], { type: 'application/pdf' });
       setPdfBlob(blob);
-      setPdfUrl(url);
+      setPdfUrl(URL.createObjectURL(blob));
       setHasGenerated(true);
     } catch (err) {
       console.error('Error generating resume:', err);
@@ -70,16 +115,16 @@ export default function CreateResume() {
   };
 
   const handleDownload = () => {
-    if (pdfUrl) {
+    if (pdfUrl && resumeTitle) {
       const link = document.createElement('a');
       link.href = pdfUrl;
-      link.download = 'resume.pdf';
+      link.download = `${resumeTitle}.pdf`;
       link.click();
     }
   };
 
   const handleSave = async () => {
-    if (!pdfUrl || saving) return;
+    if (!pdfUrl || saving || !resumeTitle) return;
     setSaving(true);
 
     try {
@@ -98,7 +143,10 @@ export default function CreateResume() {
 
       const response = await api.post(
         '/resume/save',
-        { buffer: base64String },
+        {
+          buffer: base64String,
+          resumeTitle: resumeTitle,
+        },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -164,6 +212,10 @@ export default function CreateResume() {
               className="w-full h-[700px] border rounded shadow"
               onError={() => alert('⚠️ Failed to preview PDF. Try downloading instead.')}
             ></iframe>
+
+            <p className="text-sm font-medium text-gray-600">
+              Filename: <span className="text-gray-800">{resumeTitle}.pdf</span>
+            </p>
 
             <div className="flex gap-4 py-10 justify-between">
               <button

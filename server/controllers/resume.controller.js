@@ -1,11 +1,8 @@
 // server/controllers/resume.controller.js
-const { generateResumeService } = require('../services/resume.service');
 const { generateResumePDF } = require('../services/resume_builder/generateResumePDF');
-
-const fs = require('fs');
+const tailorResume = require('../services/tailorResume/tailorResume');
 
 const { SASProtocol } = require('@azure/storage-blob');
-const { v4: uuidv4 } = require('uuid');
 const { BlobServiceClient, StorageSharedKeyCredential, generateBlobSASQueryParameters, BlobSASPermissions } = require('@azure/storage-blob');
 const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
 const AZURE_ACCOUNT_NAME = process.env.AZURE_ACCOUNT_NAME;
@@ -16,16 +13,22 @@ const containerName = 'resumes';
 async function handleGenerateResume(req, res) {
   try {
     const resumeData = req.body;
-    const pdfBuffer = await generateResumeService(resumeData);
+    const newResume = await tailorResume(resumeData);
 
-    // Check explicitly Buffer instance
+
+    const pdfBuffer = await generateResumePDF(newResume.tailoredResume);
+    const newTitle = newResume.resumeTitle;
+
     if (!Buffer.isBuffer(pdfBuffer)) {
-      console.error('❌ pdfBuffer is not a valid Buffer:', pdfBuffer);
+      console.error('❌ pdfBuffer is not a valid Buffer');
       return res.status(500).send('PDF generation failed');
     }
-
+    // console.log('Generated tailored resume:', newResume);
+    // ✅ Set custom headers
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'inline; filename="Resume.pdf"');
+    res.setHeader('Content-Disposition', `inline; filename="${newTitle}.pdf"`);
+    res.setHeader('X-Resume-Title', newTitle); // custom header for frontend access
+
     res.send(pdfBuffer);
   } catch (error) {
     console.error('❌ Error generating resume:', error);
@@ -52,7 +55,7 @@ async function listResumes(req, res) {
     for await (const blob of containerClient.listBlobsFlat({ prefix: userPrefix })) {
       const blobClient = containerClient.getBlobClient(blob.name);
 
-      // 建立 SAS Token (有效時間 1 小時)
+
       const sasToken = generateBlobSASQueryParameters(
         {
           containerName,
@@ -67,7 +70,8 @@ async function listResumes(req, res) {
       const previewUrl = `${blobClient.url}?${sasToken}`;
 
       blobs.push({
-        name: blob.name,
+        name: blob.name, // full blob path (e.g., "1/filename.pdf")
+        filename: blob.name.split('/').slice(1).join('/'), // just "filename.pdf"
         previewUrl,
         lastModified: blob.properties.lastModified,
       });

@@ -52,9 +52,14 @@ export default function SavedResumes() {
               <div key={r.name} className="bg-white p-4 shadow rounded border">
                 <iframe
                   src={r.previewUrl}
-                  title={r.name}
+                  title={r.filename}
                   className="w-full h-60 mb-3 border"
                 ></iframe>
+
+                {/* ✅ Show resume filename */}
+                <p className="font-medium text-sm text-gray-800 truncate mb-1">
+                  {r.filename}
+                </p>
 
                 <p className="text-sm text-gray-600 mb-2">
                   Last modified: {new Date(r.lastModified).toLocaleString()}
