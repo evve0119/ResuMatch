@@ -13,11 +13,14 @@ app.use(express.json({ limit: '10mb' })); // 或者 '20mb' 視情況調整
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 app.use(cors({
-  origin: '*', // or specify array of allowed origins
+  origin: 'https://purple-moss-034ab441e.6.azurestaticapps.net',
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   exposedHeaders: ['X-Resume-Title'],
 }));
+
+app.options('*', cors());  // ✅ 為了處理 preflight
 
 // Health check
 app.get('/api', (req, res) => res.json({ message: 'Hello from the server!' }));
