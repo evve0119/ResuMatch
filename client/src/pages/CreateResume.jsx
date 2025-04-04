@@ -7,7 +7,7 @@ export default function CreateResume() {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [pdfUrl, setPdfUrl] = useState(null);
-  const [pdfBlob, setPdfBlob] = useState(null);
+  const [pdfBlob, setPdfBlob] = useState(null)
   const [resumeTitle, setResumeTitle] = useState(''); // ✅ Added
   const [isAccountAvailable, setIsAccountAvailable] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);

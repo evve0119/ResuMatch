@@ -4,6 +4,11 @@ const tailorResume = require('../services/tailorResume/tailorResume');
 
 const { SASProtocol } = require('@azure/storage-blob');
 const { BlobServiceClient, StorageSharedKeyCredential, generateBlobSASQueryParameters, BlobSASPermissions } = require('@azure/storage-blob');
+
+
+const { SASProtocol } = require('@azure/storage-blob');
+const { v4: uuidv4 } = require('uuid');
+const { BlobServiceClient, StorageSharedKeyCredential, generateBlobSASQueryParameters, BlobSASPermissions } = require('@azure/storage-blob');
 const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
 const AZURE_ACCOUNT_NAME = process.env.AZURE_ACCOUNT_NAME;
 const AZURE_ACCOUNT_KEY = process.env.AZURE_ACCOUNT_KEY;
@@ -54,7 +59,6 @@ async function listResumes(req, res) {
 
     for await (const blob of containerClient.listBlobsFlat({ prefix: userPrefix })) {
       const blobClient = containerClient.getBlobClient(blob.name);
-
 
       const sasToken = generateBlobSASQueryParameters(
         {
