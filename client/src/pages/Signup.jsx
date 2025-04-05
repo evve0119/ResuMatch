@@ -1,4 +1,3 @@
-// src/Signup.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
@@ -34,9 +33,9 @@ export default function Signup() {
         password: form.password,
       });
 
+      // Store token and mark as just signed up
       localStorage.setItem('token', res.data.token);
-
-      // 顯示提示，延遲跳轉
+      localStorage.setItem('justSignedUp', 'true');
 
       setTimeout(() => {
         alert('✅ Signup successful! Redirecting...');
@@ -46,34 +45,12 @@ export default function Signup() {
       alert(err.response?.data?.error || 'Signup failed');
     }
   };
+
   return (
     <div className="min-h-screen bg-white font-trebuchet relative">
       <Navbar />
-
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-xs flex flex-col items-center relative">
-
-
-
-          {/* Social Sign Up */}
-          {/* <button className="flex items-center w-full border border-gray-300 rounded-full px-6 py-2 mb-4">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" alt="LinkedIn" className="h-5 w-5 mr-2" />
-            <span className="text-gray-600">Sign up with LinkedIn</span>
-          </button>
-
-          <button className="flex items-center w-full border border-gray-300 rounded-full px-6 py-2 mb-4">
-            <img src="https://kgo.googleusercontent.com/profile_vrt_raw_bytes_1587515358_10512.png" alt="Google" className="h-5 w-5 mr-2" />
-            <span className="text-gray-600">Sign up with Google</span>
-          </button> */}
-
-          {/* Divider */}
-          {/* <div className="flex items-center w-full my-6">
-            <hr className="flex-grow border-t border-gray-300" />
-            <span className="mx-4 text-gray-500">or</span>
-            <hr className="flex-grow border-t border-gray-300" />
-          </div> */}
-
-          {/* Signup Form */}
           <form onSubmit={handleSignup} className="w-full">
             <input
               type="text"
@@ -84,7 +61,6 @@ export default function Signup() {
               className="w-full border border-gray-300 rounded px-4 py-2 mb-4 outline-none"
               required
             />
-
             <input
               type="email"
               name="email"
@@ -94,7 +70,6 @@ export default function Signup() {
               className="w-full border border-gray-300 rounded px-4 py-2 mb-4 outline-none"
               required
             />
-
             <input
               type="password"
               name="password"
@@ -104,7 +79,6 @@ export default function Signup() {
               className="w-full border border-gray-300 rounded px-4 py-2 mb-4 outline-none"
               required
             />
-
             <input
               type="password"
               name="confirmPassword"
@@ -127,7 +101,6 @@ export default function Signup() {
             </button>
           </form>
 
-          {/* Login redirect */}
           <p className="text-sm text-center mt-4 text-gray-700">
             Already have an account?{' '}
             <Link to="/login" className="text-[#320C8A] font-semibold hover:underline">

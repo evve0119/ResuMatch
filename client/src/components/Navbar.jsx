@@ -7,7 +7,16 @@ export default function Navbar() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token);
+    const justSignedUp = localStorage.getItem('justSignedUp');
+
+    if (justSignedUp) {
+      // Invalidate the token after signup and force re-login
+      localStorage.removeItem('token');
+      localStorage.removeItem('justSignedUp');
+      setIsLoggedIn(false);
+    } else {
+      setIsLoggedIn(!!token);
+    }
   }, []);
 
   const handleSignout = () => {
@@ -33,9 +42,7 @@ export default function Navbar() {
       <div className="flex items-center space-x-6 text-[#320C8A] font-medium">
         {isLoggedIn ? (
           <>
-            <Link to="/saveresume">
-              resume
-            </Link>
+            <Link to="/saveresume">resume</Link>
             <Link to="/account">my account</Link>
             <button
               onClick={handleSignout}
