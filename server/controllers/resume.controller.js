@@ -13,23 +13,53 @@ const containerName = 'resumes';
 async function handleGenerateResume(req, res) {
   try {
     const resumeData = req.body;
-    const newResume = await tailorResume(resumeData);
 
-
-    const pdfBuffer = await generateResumePDF(newResume.tailoredResume);
-    const newTitle = newResume.resumeTitle;
-
-    if (!Buffer.isBuffer(pdfBuffer)) {
-      console.error('❌ pdfBuffer is not a valid Buffer');
-      return res.status(500).send('PDF generation failed');
+    // Handle missing fields here
+    if (!resumeData.resumeJson) {
+      return res.status(400).json({ error: "Missing required fields." });
     }
-    // console.log('Generated tailored resume:', newResume);
-    // ✅ Set custom headers
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `inline; filename="${newTitle}.pdf"`);
-    res.setHeader('X-Resume-Title', newTitle); // custom header for frontend access
 
-    res.send(pdfBuffer);
+    if (!resumeData.jobDescription.trim()) {
+
+      const pdfBuffer = await generateResumePDF(resumeData.resumeJson);
+
+      const now = new Date();
+      const timestamp = now.toLocaleString('sv-SE').replace(/[: ]/g, '-'); // 'sv-SE' gives ISO-like date
+      const newTitle = `Resume_without_JD_${timestamp}`;
+
+      if (!Buffer.isBuffer(pdfBuffer)) {
+        console.error('❌ pdfBuffer is not a valid Buffer');
+        return res.status(500).send('PDF generation failed');
+      }
+      // console.log('Generated tailored resume:', newResume);
+      // ✅ Set custom headers
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `inline; filename="${newTitle}.pdf"`);
+      res.setHeader('X-Resume-Title', newTitle); // custom header for frontend access
+
+      res.send(pdfBuffer);
+
+    } else {
+
+      const newResume = await tailorResume(resumeData);
+
+
+      const pdfBuffer = await generateResumePDF(newResume.tailoredResume);
+      const newTitle = newResume.resumeTitle;
+
+      if (!Buffer.isBuffer(pdfBuffer)) {
+        console.error('❌ pdfBuffer is not a valid Buffer');
+        return res.status(500).send('PDF generation failed');
+      }
+      // console.log('Generated tailored resume:', newResume);
+      // ✅ Set custom headers
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `inline; filename="${newTitle}.pdf"`);
+      res.setHeader('X-Resume-Title', newTitle); // custom header for frontend access
+
+      res.send(pdfBuffer);
+    }
+
   } catch (error) {
     console.error('❌ Error generating resume:', error);
     res.status(500).json({ error: 'Failed to generate PDF resume' });

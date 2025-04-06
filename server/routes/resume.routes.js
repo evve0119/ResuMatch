@@ -14,6 +14,6 @@ router.post('/save', authenticate, saveResume);
 // router.post('/tailor', tailorResume);
 
 router.get('/history', authenticate, listResumes);
-router.delete('/history/:blobName', authenticate, deleteResume);
+router.delete('/history/:blobName(*)', authenticate, deleteResume);
 
 module.exports = router;

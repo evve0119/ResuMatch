@@ -10,7 +10,6 @@ const PDFSHIFT_API_KEY = process.env.PDFSHIFT_API_KEY;
 
 async function generateResumePDF(resumeObj) {
   console.log('** [Step 0] Starting PDF generation...');
-  console.log('[ENV] AZURE_FUNCTIONS_ENVIRONMENT =', process.env.AZURE_FUNCTIONS_ENVIRONMENT);
 
   try {
     // Step 1: Read template & CSS
