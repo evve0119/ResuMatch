@@ -574,4 +574,4 @@ Most importantly, we realized that building a product like this isn’t just abo
 
 # **11\. Video Demonstration**
 
-Video link:
+[![Watch the video](./image/Demo.png)](https://youtu.be/8fv66G7TbtQ)
