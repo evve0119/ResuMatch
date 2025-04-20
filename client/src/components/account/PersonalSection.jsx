@@ -32,7 +32,7 @@ export default function PersonalSection({ formData, setFormData }) {
               name={key}
               value={personal[key]}
               onChange={handleChange}
-              placeholder={key.charAt(0).toUpperCase() + key.slice(1)}
+              placeholder={key.charAt(0) + key.slice(1)}
               className="border border-gray-300 px-3 py-2 rounded outline-none"
             />
           ))}

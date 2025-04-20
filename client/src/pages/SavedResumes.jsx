@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../api';
 import Navbar from '../components/Navbar';
+import { Button } from "@/components/ui/button";
 
 export default function SavedResumes() {
   const [resumes, setResumes] = useState([]);
@@ -66,19 +67,19 @@ export default function SavedResumes() {
                 </p>
 
                 <div className="flex gap-2 justify-between">
-                  <button
+                  <Button
                     onClick={() => window.open(r.previewUrl, '_blank')}
-                    className="bg-blue-500 text-white px-3 py-1 rounded"
+                    className="bg-blue-500 text-white px-3 py-1 rounded shadow-sm hover:bg-blue-700"
                   >
                     Preview
-                  </button>
+                  </Button>
 
-                  <button
+                  <Button
                     onClick={() => handleDelete(r.name)}
-                    className="bg-red-500 text-white px-3 py-1 rounded"
+                    className="bg-red-500 text-white px-3 py-1 rounded shadow-sm hover:bg-red-700"
                   >
                     Delete
-                  </button>
+                  </Button>
                 </div>
               </div>
             ))}

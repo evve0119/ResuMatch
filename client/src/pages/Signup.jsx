@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import api from '../api';
+import { Button } from "@/components/ui/button";
 
 export default function Signup() {
   const [form, setForm] = useState({
@@ -93,12 +94,12 @@ export default function Signup() {
               <p className="text-sm text-red-500 mb-4 text-center">{error}</p>
             )}
 
-            <button
+            <Button
               type="submit"
               className="w-full bg-[#BFAEE7] text-white font-semibold py-2 rounded-full hover:bg-[#A88FDB] transition"
             >
               Sign Up
-            </button>
+            </Button>
           </form>
 
           <p className="text-sm text-center mt-4 text-gray-700">

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api';
 import Navbar from '../components/Navbar';
+import { Button } from "@/components/ui/button";
 
 export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -52,12 +53,12 @@ export default function Login() {
               required
             />
 
-            <button
+            <Button
               type="submit"
               className="w-full bg-[#BFAEE7] text-white font-semibold py-2 rounded-full hover:bg-[#A88FDB] transition"
             >
               Login
-            </button>
+            </Button>
           </form>
 
           <p className="text-sm text-center mt-4 text-gray-700">

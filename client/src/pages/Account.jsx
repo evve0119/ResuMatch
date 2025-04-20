@@ -7,6 +7,7 @@ import ExperienceSection from '../components/account/ExperienceSection';
 import SkillsSection from '../components/account/SkillsSection';
 import ProjectsSection from '../components/account/ProjectsSection';
 import api from '../api';
+import { Button } from "@/components/ui/button";
 
 const sectionList = [
   'Personal Information',
@@ -162,30 +163,30 @@ export default function Account() {
 
           <div className="flex items-center mt-8 justify-between">
             {currentSection !== 0 && (
-              <button
+              <Button
                 onClick={() => setCurrentSection(currentSection - 1)}
-                className="bg-[#ccc] text-white px-4 py-2 rounded"
+               className="bg-[#320C8A] hover:bg-[#BCB4CE] text-white px-4 py-2 rounded shadow transition"
               >
                 Previous
-              </button>
+              </Button>
             )}
 
             {currentSection === sectionList.length - 1 ? (
-              <button
+              <Button
                 onClick={handleSave}
                 disabled={saving}
-                className={`bg-[#008080] hover:bg-[#006666] text-white px-6 py-2 rounded shadow transition ${saving ? 'opacity-60 cursor-not-allowed' : ''
+                className={`bg-[#1E4EAD] hover:bg-[#B0BBCC] text-white px-4 py-2 rounded shadow transition ${saving ? 'opacity-60 cursor-not-allowed' : ''
                   }`}
               >
                 {saving ? 'Saving...' : 'Save'}
-              </button>
+              </Button>
             ) : (
-              <button
+              <Button
                 onClick={() => setCurrentSection(currentSection + 1)}
-                className="bg-[#320C8A] text-white px-4 py-2 rounded ml-auto"
+                className="bg-[#320C8A] hover:bg-[#BCB4CE] text-white px-4 py-2 rounded shadow transition ml-auto"
               >
                 Next
-              </button>
+              </Button>
             )}
           </div>
         </div>

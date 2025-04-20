@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Trash2, PlusCircle, X } from 'lucide-react';
+import { Button } from "@/components/ui/button";
 
 export default function ExperienceSection({ formData, setFormData }) {
   const [skillInputs, setSkillInputs] = useState({});
@@ -77,18 +78,18 @@ export default function ExperienceSection({ formData, setFormData }) {
                 onChange={(e) =>
                   setSkillInputs({ ...skillInputs, [idx]: e.target.value })
                 }
-                placeholder="Add skill"
+                placeholder="add skill"
                 className="border border-gray-300 px-3 py-2 rounded outline-none w-full"
               />
-              <button
+              <Button
                 onClick={() =>
                   handleAddArrayItem(idx, 'skills_acquired', skillInputs[idx], setSkillInputs)
                 }
                 className="flex items-center gap-2 bg-[#BFAEE7] hover:bg-[#A88FDB] text-white px-4 py-2 rounded-full shadow transition"
               >
-                <PlusCircle size={18} />
+                <PlusCircle size={20} />
                 Add
-              </button>
+              </Button>
             </div>
             <div className="flex flex-wrap gap-2">
               {exp.skills_acquired?.map((skill, skillIdx) => (
@@ -101,7 +102,7 @@ export default function ExperienceSection({ formData, setFormData }) {
                     onClick={() => handleDeleteArrayItem(idx, 'skills_acquired', skillIdx)}
                     className="text-red-500 hover:text-red-700"
                   >
-                    <X size={14} />
+                    <X size={20} />
                   </button>
                 </span>
               ))}
@@ -117,18 +118,18 @@ export default function ExperienceSection({ formData, setFormData }) {
                 onChange={(e) =>
                   setRespInputs({ ...respInputs, [idx]: e.target.value })
                 }
-                placeholder="Add responsibility"
+                placeholder="add responsibility"
                 className="border border-gray-300 px-3 py-2 rounded outline-none w-full"
               />
-              <button
+              <Button
                 onClick={() =>
                   handleAddArrayItem(idx, 'key_responsibilities', respInputs[idx], setRespInputs)
                 }
                 className="flex items-center gap-2 bg-[#BFAEE7] hover:bg-[#A88FDB] text-white px-4 py-2 rounded-full shadow transition"
               >
-                <PlusCircle size={18} />
+                <PlusCircle size={20} />
                 Add
-              </button>
+              </Button>
             </div>
             <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
               {exp.key_responsibilities?.map((resp, i) => (
@@ -138,7 +139,7 @@ export default function ExperienceSection({ formData, setFormData }) {
                     onClick={() => handleDeleteArrayItem(idx, 'key_responsibilities', i)}
                     className="text-red-500 hover:text-red-700"
                   >
-                    <X size={14} />
+                    <X size={16} />
                   </button>
                 </li>
               ))}
@@ -152,7 +153,7 @@ export default function ExperienceSection({ formData, setFormData }) {
               className="text-red-500 hover:text-red-700"
               aria-label="Delete experience section"
             >
-              <Trash2 size={18} />
+              <Trash2 size={20} />
             </button>
           </div>
         </div>
@@ -160,13 +161,13 @@ export default function ExperienceSection({ formData, setFormData }) {
 
       {/* Add New Experience Section */}
       <div className="flex justify-center">
-        <button
+        <Button
           onClick={addExperience}
           className="flex items-center gap-2 bg-[#BFAEE7] hover:bg-[#A88FDB] text-white px-4 py-2 rounded-full shadow transition"
         >
-          <PlusCircle size={18} />
+          <PlusCircle size={20} />
           Add Experience
-        </button>
+        </Button>
       </div>
     </div>
   );

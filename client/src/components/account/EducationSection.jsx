@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Trash2, PlusCircle, X } from 'lucide-react';
+import { Button } from "@/components/ui/button";
 
 export default function EducationSection({ formData, setFormData }) {
   const [courseInputs, setCourseInputs] = useState({});
@@ -86,16 +87,16 @@ export default function EducationSection({ formData, setFormData }) {
                 onChange={(e) =>
                   setCourseInputs({ ...courseInputs, [idx]: e.target.value })
                 }
-                placeholder="Add course name"
+                placeholder="add course name"
                 className="border border-gray-300 px-3 py-2 rounded outline-none w-full"
               />
-              <button
+              <Button
                 onClick={() => handleAddCourse(idx)}
                 className="flex items-center gap-2 bg-[#BFAEE7] hover:bg-[#A88FDB] text-white px-4 py-2 rounded-full shadow transition"
               >
-                <PlusCircle size={18} />
+                <PlusCircle size={20} />
                 Add
-              </button>
+              </Button>
             </div>
             <div className="flex flex-wrap gap-2">
               {edu.coursework.map((course, courseIdx) => (
@@ -108,7 +109,7 @@ export default function EducationSection({ formData, setFormData }) {
                     onClick={() => handleDeleteCourse(idx, courseIdx)}
                     className="text-red-500 hover:text-red-700"
                   >
-                    <X size={14} />
+                    <X size={20} />
                   </button>
                 </span>
               ))}
@@ -122,7 +123,7 @@ export default function EducationSection({ formData, setFormData }) {
               className="text-red-500 hover:text-red-700"
               aria-label="Delete education section"
             >
-              <Trash2 size={18} />
+              <Trash2 size={20} />
             </button>
           </div>
         </div>
@@ -130,13 +131,13 @@ export default function EducationSection({ formData, setFormData }) {
 
       {/* Add New Education Section */}
       <div className="flex justify-center">
-        <button
+        <Button
           onClick={addEducation}
           className="flex items-center gap-2 bg-[#BFAEE7] hover:bg-[#A88FDB] text-white px-4 py-2 rounded-full shadow transition"
         >
-          <PlusCircle size={18} />
+          <PlusCircle size={20} />
           Add Education
-        </button>
+        </Button>
       </div>
     </div>
   );

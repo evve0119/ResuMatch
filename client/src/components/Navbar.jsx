@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Button } from "@/components/ui/button";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -57,12 +58,12 @@ export default function Navbar() {
           </>
         )}
 
-        <button
+        <Button
           onClick={handleCraftClick}
           className="ml-4 bg-[#BFAEE7] text-white px-4 py-1 rounded-full shadow-sm hover:bg-[#A88FDB]"
         >
           craft my resume
-        </button>
+        </Button>
       </div>
     </nav>
   );

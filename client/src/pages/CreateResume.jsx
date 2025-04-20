@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import api from '../api';
 import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 export default function CreateResume() {
   const [loading, setLoading] = useState(false);
@@ -188,15 +189,19 @@ export default function CreateResume() {
         </div>
 
         {/* Generate Button */}
-        <button
+        <Button
           onClick={handleGenerate}
           disabled={loading || !isAccountAvailable}
           className={`mt-6 px-6 py-3 rounded-md text-white font-medium shadow transition duration-200 ${
-            loading || !isAccountAvailable ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#6B4EFF] hover:bg-[#5a3ddd]'
+            loading || !isAccountAvailable ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#320C8A] hover:bg-[#5a3ddd]'
           }`}
         >
-          {loading ? 'Generating...' : hasGenerated ? 'Regenerate Resume' : 'Generate Resume'}
-        </button>
+          {loading 
+          ? 'Generating...' 
+          : hasGenerated 
+          ? 'Regenerate Resume' 
+          : 'Generate Resume'}
+        </Button>
 
         {loading && (
           <div className="mt-8">
@@ -218,21 +223,21 @@ export default function CreateResume() {
             </p>
 
             <div className="flex gap-4 py-10 justify-between">
-              <button
+              <Button
                 onClick={handleDownload}
-                className="bg-[#4CAF50] hover:bg-[#3e8e41] text-white px-4 py-2 rounded"
+                className="bg-[#4CAF50] hover:bg-[#3e8e41] text-white px-4 py-2 rounded shadow transition"
               >
                 Download
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={handleSave}
                 disabled={saving}
-                className={`bg-[#FFA500] hover:bg-[#e69500] text-white px-4 py-2 rounded ${
-                  saving ? 'opacity-60 cursor-not-allowed' : ''
+                className={`bg-[#FFA500] hover:bg-[#e69500] text-white px-4 py-2 rounded shadow transition${
+                  saving ? "opacity-60 cursor-not-allowed" : ""
                 }`}
               >
-                {saving ? 'Saving...' : 'Save'}
-              </button>
+                {saving ? "Saving..." : "Save"}
+              </Button>
             </div>
           </div>
         )}

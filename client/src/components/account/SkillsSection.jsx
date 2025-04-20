@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { PlusCircle, X } from 'lucide-react';
+import { Button } from "@/components/ui/button";
 
 export default function SkillsSection({ formData, setFormData }) {
   const [langInput, setLangInput] = useState('');
@@ -40,16 +41,16 @@ export default function SkillsSection({ formData, setFormData }) {
             placeholder="e.g., Python"
             className="border border-gray-300 px-3 py-2 rounded outline-none w-full"
           />
-          <button
+          <Button
             onClick={() => {
               addSkill('programming_languages', langInput);
               setLangInput('');
             }}
             className="flex items-center gap-2 bg-[#BFAEE7] hover:bg-[#A88FDB] text-white px-4 py-2 rounded-full shadow transition"
           >
-            <PlusCircle size={18} />
+            <PlusCircle size={20} />
             Add
-          </button>
+          </Button>
         </div>
         <div className="flex flex-wrap gap-2">
           {formData.technical_skills.programming_languages.map((lang, idx) => (
@@ -62,7 +63,7 @@ export default function SkillsSection({ formData, setFormData }) {
                 onClick={() => deleteSkill('programming_languages', idx)}
                 className="text-red-500 hover:text-red-700"
               >
-                <X size={14} />
+                <X size={20} />
               </button>
             </span>
           ))}
@@ -79,16 +80,16 @@ export default function SkillsSection({ formData, setFormData }) {
             placeholder="e.g., React, Docker"
             className="border border-gray-300 px-3 py-2 rounded outline-none w-full"
           />
-          <button
+          <Button
             onClick={() => {
               addSkill('frameworks_tools', toolInput);
               setToolInput('');
             }}
             className="flex items-center gap-2 bg-[#BFAEE7] hover:bg-[#A88FDB] text-white px-4 py-2 rounded-full shadow transition"
           >
-            <PlusCircle size={18} />
+            <PlusCircle size={20} />
             Add
-          </button>
+          </Button>
         </div>
         <div className="flex flex-wrap gap-2">
           {formData.technical_skills.frameworks_tools.map((tool, idx) => (
@@ -101,7 +102,7 @@ export default function SkillsSection({ formData, setFormData }) {
                 onClick={() => deleteSkill('frameworks_tools', idx)}
                 className="text-red-500 hover:text-red-700"
               >
-                <X size={14} />
+                <X size={20} />
               </button>
             </span>
           ))}
