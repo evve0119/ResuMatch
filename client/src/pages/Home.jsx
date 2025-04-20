@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar';
 
 export default function Home() {
   return (
-    <div className="bg-gray-100 min-h-screen font-trebuchet">
+    <div className="bg-gray-100 min-h-screen font-trebuchet pt-18">
       <Navbar />
       <main className="flex items-center justify-center h-[70vh]">
         <h2 className="text-4xl md:text-5xl text-[#BFAEE7] font-semibold text-center">

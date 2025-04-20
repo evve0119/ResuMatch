@@ -168,7 +168,7 @@ export default function CreateResume() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 min-h-screen pt-18">
       <Navbar />
       <div className="max-w-5xl mx-auto px-6 py-20 text-center">
         <h1 className="text-3xl font-bold text-[#320C8A] mb-6">Generate Resume</h1>

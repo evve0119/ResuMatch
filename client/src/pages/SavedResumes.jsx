@@ -40,7 +40,7 @@ export default function SavedResumes() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 min-h-screen pt-18">
       <Navbar />
       <div className="max-w-6xl mx-auto py-12 px-6">
         <h1 className="text-3xl font-bold text-[#320C8A] mb-8">Saved Resumes</h1>

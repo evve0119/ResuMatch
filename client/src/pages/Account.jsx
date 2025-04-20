@@ -180,8 +180,8 @@ export default function Account() {
       <Navbar />
       <div className="flex">
         {/* Sidebar */}
-        <div className="w-1/5 bg-[#F5F3FA] border-r min-h-screen p-4">
-          <h2 className="text-lg font-bold text-[#320C8A] mb-4">Sections</h2>
+        <div className="w-1/5 bg-[#F5F3FA] border-r min-h-screen p-4 fixed z-0">
+          <h2 className="text-lg font-bold text-[#320C8A] mb-4 pt-18">Sections</h2>
           <ul className="space-y-2">
             {sectionList.map((section, idx) => (
               <li
@@ -196,7 +196,7 @@ export default function Account() {
         </div>
 
         {/* Form Content */}
-        <div className="w-4/5 p-6">
+        <div className="w-4/5 ml-[20%] p-6 pt-24">
           <div className="mb-8">
             <h1 className="text-2xl font-bold text-[#320C8A] mb-2">{sectionList[currentSection]}</h1>
             {renderSection()}

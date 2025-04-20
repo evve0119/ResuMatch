@@ -35,7 +35,8 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-white shadow-md px-8 py-4 flex justify-between items-center font-trebuchet">
+    <nav className="bg-white shadow-md px-8 py-4 flex justify-between items-center font-trebuchet fixed top-0 left-0 w-full z-10 border-b border-gray-200">
+
       <Link to="/" className="text-3xl font-bold text-[#BFAEE7]">
         Resu<span className="text-[#320C8A]">Match</span>
       </Link>

@@ -28,7 +28,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-white font-trebuchet">
+    <div className="min-h-screen bg-white font-trebuchet pt-18">
       <Navbar />
 
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
