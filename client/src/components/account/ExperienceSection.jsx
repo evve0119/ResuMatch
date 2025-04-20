@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Trash2, PlusCircle, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 export default function ExperienceSection({ formData, setFormData }) {
+  const firstInputRef = useRef(null);
+    useEffect(() => {
+      firstInputRef.current?.focus();
+    }, []);
+  
   const [skillInputs, setSkillInputs] = useState({});
   const [respInputs, setRespInputs] = useState({});
 
@@ -58,8 +63,11 @@ export default function ExperienceSection({ formData, setFormData }) {
         >
           {/* Basic Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {['position', 'company', 'location', 'employment_period'].map((key) => (
+            {['position', 'company', 'location', 'employment_period'
+
+            ].map((key, i) => (
               <input
+                ref={i === 0 ? firstInputRef : null}
                 key={key}
                 value={exp[key]}
                 onChange={(e) => handleChange(idx, key, e.target.value)}
@@ -78,6 +86,12 @@ export default function ExperienceSection({ formData, setFormData }) {
                 onChange={(e) =>
                   setSkillInputs({ ...skillInputs, [idx]: e.target.value })
                 }
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleAddArrayItem(idx, 'skills_acquired', skillInputs[idx], setSkillInputs);
+                  }
+                }}
                 placeholder="add skill"
                 className="border border-gray-300 px-3 py-2 rounded outline-none w-full"
               />
@@ -118,6 +132,12 @@ export default function ExperienceSection({ formData, setFormData }) {
                 onChange={(e) =>
                   setRespInputs({ ...respInputs, [idx]: e.target.value })
                 }
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleAddArrayItem(idx, 'key_responsibilities', respInputs[idx], setRespInputs);
+                  }
+                }}
                 placeholder="add responsibility"
                 className="border border-gray-300 px-3 py-2 rounded outline-none w-full"
               />

@@ -46,18 +46,17 @@ export default function Account() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
+    // 1. Fetch account data
     const fetchAccount = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const res = await api.get('/account', {
+        const token = localStorage.getItem("token");
+        const res = await api.get("/account", {
           headers: { Authorization: `Bearer ${token}` },
         });
-
+  
         const data = res.data;
-        console.log('Fetched account data:', data);
-        if (!data) {
-          throw new Error('No account data found');
-        }
+        if (!data) throw new Error("No account data found");
+  
         setFormData({
           personal_information: {
             name: data.name || '',
@@ -78,15 +77,57 @@ export default function Account() {
           },
           projects: data.projects || []
         });
+  
         setHasAccount(true);
       } catch (err) {
-        console.warn('No existing account found or error fetching it.', err);
+        console.warn("No existing account found or error fetching it.", err);
         setHasAccount(false);
       }
     };
-
+  
     fetchAccount();
+  
+    // 2. Handle Enter to focus next input
+    const handleEnterKey = (e) => {
+      const tag = e.target.tagName.toLowerCase();
+      const isInput = tag === "input" || tag === "select";
+      const isTextarea = tag === "textarea";
+  
+      if (!isInput || isTextarea) return;
+  
+      if (e.key === "Enter") {
+        e.preventDefault();
+  
+        const inputs = Array.from(
+          e.target
+            .closest("form, .grid, .section-block, .form-area") // fallback selectors
+            ?.querySelectorAll(
+              'input:not([type=hidden]):not([disabled]):not([readonly]), select, textarea'
+            ) || []
+        ).filter((el) => el.offsetParent !== null);
+  
+        const index = inputs.indexOf(e.target);
+        if (index > -1 && index < inputs.length - 1) {
+          inputs[index + 1].focus();
+        }
+      }
+    };
+  
+    // 3. Warn user before leaving page with unsaved changes
+    const handleBeforeUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = '';
+    };
+  
+    window.addEventListener("keydown", handleEnterKey);
+    window.addEventListener("beforeunload", handleBeforeUnload);
+  
+    return () => {
+      window.removeEventListener("keydown", handleEnterKey);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
   }, []);
+  
 
   const renderSection = () => {
     switch (currentSection) {

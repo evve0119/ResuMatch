@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 export default function PersonalSection({ formData, setFormData }) {
+  const firstInputRef = useRef(null);
+    useEffect(() => {
+      firstInputRef.current?.focus();
+    }, []);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -26,8 +31,9 @@ export default function PersonalSection({ formData, setFormData }) {
             'state',
             'github',
             'linkedin',
-          ].map((key) => (
+          ].map((key, i) => (
             <input
+              ref={i === 0 ? firstInputRef : null}
               key={key}
               name={key}
               value={personal[key]}

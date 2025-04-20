@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Trash2, PlusCircle, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 export default function EducationSection({ formData, setFormData }) {
+  const firstInputRef = useRef(null);
+  useEffect(() => {
+    firstInputRef.current?.focus();
+  }, []);
+
   const [courseInputs, setCourseInputs] = useState({});
 
   const addEducation = () => {
@@ -67,8 +72,9 @@ export default function EducationSection({ formData, setFormData }) {
               'start_date',
               'year_of_completion',
               'final_evaluation_grade',
-            ].map((key) => (
+            ].map((key, i) => (
               <input
+                ref={i === 0 ? firstInputRef : null}
                 key={key}
                 value={edu[key]}
                 onChange={(e) => handleChange(idx, key, e.target.value)}
@@ -87,6 +93,12 @@ export default function EducationSection({ formData, setFormData }) {
                 onChange={(e) =>
                   setCourseInputs({ ...courseInputs, [idx]: e.target.value })
                 }
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleAddCourse(idx); // trigger the ADD button
+                  }
+                }}
                 placeholder="add course name"
                 className="border border-gray-300 px-3 py-2 rounded outline-none w-full"
               />

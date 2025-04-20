@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Trash2, PlusCircle, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 export default function ProjectsSection({ formData, setFormData }) {
+  const firstInputRef = useRef(null);
+      useEffect(() => {
+        firstInputRef.current?.focus();
+      }, []);
+  
   const [descInputs, setDescInputs] = useState({});
 
   const addProject = () => {
@@ -47,6 +52,7 @@ export default function ProjectsSection({ formData, setFormData }) {
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
+              ref={firstInputRef}
               value={proj.name}
               onChange={(e) => handleChange(idx, 'name', e.target.value)}
               placeholder="project name"
@@ -69,6 +75,12 @@ export default function ProjectsSection({ formData, setFormData }) {
                 onChange={(e) =>
                   setDescInputs({ ...descInputs, [idx]: e.target.value })
                 }
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleAddDescription(idx, descInputs[idx]);
+                  }
+                }}
                 placeholder="add description"
                 className="border border-gray-300 px-3 py-2 rounded outline-none w-full"
               />

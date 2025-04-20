@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { PlusCircle, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 export default function SkillsSection({ formData, setFormData }) {
+  const firstInputRef = useRef(null);
+    useEffect(() => {
+      firstInputRef.current?.focus();
+    }, []);
+
   const [langInput, setLangInput] = useState('');
   const [toolInput, setToolInput] = useState('');
 
@@ -36,8 +41,16 @@ export default function SkillsSection({ formData, setFormData }) {
         <p className="font-semibold text-lg mb-2">Programming Languages</p>
         <div className="flex gap-2 mb-3">
           <input
+            ref={firstInputRef}
             value={langInput}
             onChange={(e) => setLangInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                addSkill('programming_languages', langInput);
+                setLangInput('');
+              }
+            }}
             placeholder="e.g., Python"
             className="border border-gray-300 px-3 py-2 rounded outline-none w-full"
           />
@@ -77,6 +90,13 @@ export default function SkillsSection({ formData, setFormData }) {
           <input
             value={toolInput}
             onChange={(e) => setToolInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                addSkill('frameworks_tools', toolInput);
+                setToolInput('');
+              }
+            }}
             placeholder="e.g., React, Docker"
             className="border border-gray-300 px-3 py-2 rounded outline-none w-full"
           />
