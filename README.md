@@ -39,7 +39,7 @@ The backend was built using Express.js and structured as a RESTful API. It handl
 
 ### **Frontend Technology:**
 
-The frontend was developed using React with Tailwind CSS for styling. React Router was used for client-side routing, and the UI design was prototyped using Figma.
+The frontend was developed using React with Tailwind CSS and shadcn/ui for styling. React Router was used for client-side routing, and the UI design was prototyped using Figma.
 
 ### **Database Solution:**
 
@@ -102,7 +102,7 @@ ResuMatch implements JWT-based authentication using Passport.js. This allows use
 
 ### **Frontend Experience and State Management**
 
-The React-based frontend uses Tailwind CSS to deliver a clean design. React Router manages navigation across the app, and advanced state management ensures seamless user interactions while navigating profile data, resume previews, and generation workflows.
+The React-based frontend uses Tailwind CSS and shadcn/ui to deliver a clean design. React Router manages navigation across the app, and advanced state management ensures seamless user interactions while navigating profile data, resume previews, and generation workflows.
 
 ## **4.2. Feature Overview and Course Alignment**
 
@@ -112,7 +112,7 @@ The React-based frontend uses Tailwind CSS to deliver a clean design. React Rout
 | User Authentication | JWT-based login and session management with role-based access. | Advanced Feature:  Authentication and Authorization |
 | File Handling & Storage | Resume PDFs generated via PDFShift and securely stored on Azure Blob Storage. | Core Requirement: Cloud Storage \+ Advanced Feature: File Handling |
 | Profile Data Management | Full CRUD operations on user data (experience, education, skills, projects). | Core Requirement:  Relational Database (Azure PostgreSQL via Prisma ORM) |
-| Frontend Framework | Responsive UI using React and Tailwind CSS. | Core Requirement:  React, Tailwind CSS |
+| Frontend Framework | Responsive UI using React, Tailwind CSS, and shadcn/ui. | Core Requirement:  React, Tailwind CSS, and shadcn/ui |
 | Modular Architecture | Separated frontend (React) and backend (Express.js) via RESTful APIs. | Option B: Separate Frontend and Backend Architecture |
 | PDF Resume Generation | HTML resumes are converted to PDFs using the PDFShift API. | Advanced Feature: File Processing |
 | History & Resume Preview | Users can view past resumes with auto-generated preview links. | Supports efficiency and user experience objectives |
@@ -202,9 +202,9 @@ The React-based frontend uses Tailwind CSS to deliver a clean design. React Rout
 
 ### **UI Highlights & Structure**
 
-* **Styling Framework:** Tailwind CSS for pre-styled, theme-aware UI components.
+* **Styling Framework:** Tailwind CSS and shadcn/ui for pre-styled, theme-aware UI components.
 * **Reusable Elements:**
-  * `button.jsx` defines a flexible, themeable \<Button\> component using class-variance-authority.
+  * `button.jsx` defines a flexible, themeable \<Button\> component using shadcn/ui.
   * `index.css` & `App.css` manage global styles, themes, and transitions.
 * **Frontend Design Principles:**
   * Clean, scrollable layout for form-heavy input.
@@ -552,7 +552,7 @@ Led sprint planning, designed backend architecture, implemented authentication, 
 
 ### **Phyllis: UI/UX & Frontend**
 
-Designed Figma mockups, built UI with React and Tailwind CSS, added form validation and final visual refinements.
+Designed Figma mockups, built UI with React, Tailwind CSS, and shadcn/ui, added form validation and final visual refinements.
 
 ### **Saud: DevOps & Prompt Engineering**
 
