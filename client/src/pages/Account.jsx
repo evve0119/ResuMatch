@@ -180,7 +180,7 @@ export default function Account() {
       <Navbar />
       <div className="flex">
         {/* Sidebar */}
-        <div className="w-1/5 bg-[#F5F3FA] border-r min-h-screen p-4 fixed z-0">
+        <div className="w-[240px] bg-[#F5F3FA] border-r min-h-screen p-4 fixed z-0">
           <h2 className="text-lg font-bold text-[#320C8A] mb-4 pt-18">Sections</h2>
           <ul className="space-y-2">
             {sectionList.map((section, idx) => (
@@ -196,35 +196,112 @@ export default function Account() {
         </div>
 
         {/* Form Content */}
-        <div className="w-4/5 ml-[20%] p-6 pt-24">
+        <div className="account-scroll ml-[240px] w-[calc(100%-240px)] pl-[1.5rem] pr-[0.55rem] pt-24">
           <div className="mb-8">
             <h1 className="text-2xl font-bold text-[#320C8A] mb-2">{sectionList[currentSection]}</h1>
             {renderSection()}
           </div>
 
-          <div className="flex items-center mt-8 justify-between">
-            {currentSection !== 0 && (
+          {/* Bottom Navigation */}
+          <div className="fixed bottom-0 left-[240px] w-[calc(100%-240px)] px-6 py-4 flex items-center justify-between z-10 bg-transparent backdrop-blur-sm shadow border-t border-gray-200">
+
+            {/* Left: Previous */}
+            {currentSection !== 0 ? (
               <Button
                 onClick={() => setCurrentSection(currentSection - 1)}
-               className="bg-[#320C8A] hover:bg-[#BCB4CE] text-white px-4 py-2 rounded shadow transition"
+                className="bg-[#320C8A] hover:bg-[#BCB4CE] text-white w-20 py-2 rounded shadow transition"
               >
                 Previous
               </Button>
+            ) : (
+              <div className="w-[100px]" />
             )}
 
-            {currentSection === sectionList.length - 1 ? (
+            {/* Centre: Save */}
+            <div className="absolute left-1/2 transform -translate-x-1/2">
               <Button
-                onClick={handleSave}
+                onClick={async () => {
+                  setSaving(true);
+                  const payload = {
+                    personal_information: formData.personal_information,
+                    education_details: formData.education_details,
+                    experience_details: formData.experience_details,
+                    technical_skills: formData.technical_skills,
+                    projects: formData.projects
+                  };
+                  try {
+                    const token = localStorage.getItem('token');
+                    if (hasAccount) {
+                      await api.put('/account', payload, {
+                        headers: { Authorization: `Bearer ${token}` },
+                      });
+                    } else {
+                      await api.post('/account', payload, {
+                        headers: { Authorization: `Bearer ${token}` },
+                      });
+                      setHasAccount(true);
+                    }
+                    alert('Saved!');
+                  } catch (err) {
+                    alert('❌ Failed to save.');
+                    console.error(err);
+                  } finally {
+                    setSaving(false);
+                  }
+                }}
                 disabled={saving}
-                className={`bg-[#1E4EAD] hover:bg-[#B0BBCC] text-white px-4 py-2 rounded shadow transition ${saving ? 'opacity-60 cursor-not-allowed' : ''
-                  }`}
+                className={`bg-[#1E4EAD] hover:bg-[#B0BBCC] text-white w-20 py-2 rounded shadow transition ${
+                  saving ? 'opacity-60 cursor-not-allowed' : ''
+                }`}
               >
                 {saving ? 'Saving...' : 'Save'}
+              </Button>
+            </div>
+
+            {/* Right: Next or Complete */}
+            {currentSection === sectionList.length - 1 ? (
+              <Button
+                onClick={async () => {
+                  setSaving(true);
+                  const payload = {
+                    personal_information: formData.personal_information,
+                    education_details: formData.education_details,
+                    experience_details: formData.experience_details,
+                    technical_skills: formData.technical_skills,
+                    projects: formData.projects
+                  };
+                  try {
+                    const token = localStorage.getItem('token');
+                    if (hasAccount) {
+                      await api.put('/account', payload, {
+                        headers: { Authorization: `Bearer ${token}` },
+                      });
+                    } else {
+                      await api.post('/account', payload, {
+                        headers: { Authorization: `Bearer ${token}` },
+                      });
+                      setHasAccount(true);
+                    }
+                    alert('Completed and returning home!');
+                    navigate('/');
+                  } catch (err) {
+                    alert('❌ Failed to complete.');
+                    console.error(err);
+                  } finally {
+                    setSaving(false);
+                  }
+                }}
+                disabled={saving}
+                className={`bg-[#1E4EAD] hover:bg-[#B0BBCC] text-white w-20 py-2 rounded shadow transition ${
+                  saving ? 'opacity-60 cursor-not-allowed' : ''
+                }`}
+              >
+                Complete
               </Button>
             ) : (
               <Button
                 onClick={() => setCurrentSection(currentSection + 1)}
-                className="bg-[#320C8A] hover:bg-[#BCB4CE] text-white px-4 py-2 rounded shadow transition ml-auto"
+                className="bg-[#320C8A] hover:bg-[#BCB4CE] text-white w-20 py-2 rounded shadow transition"
               >
                 Next
               </Button>

@@ -122,3 +122,14 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+.account-scroll {
+  max-height: calc(100vh); /* adjust height for navbar + bottom bar */
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+}
